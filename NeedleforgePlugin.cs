@@ -56,11 +56,29 @@ namespace Needleforge
             neoCrest.AddToolSlot(newColors[0].type, AttackToolBinding.Neutral, Vector2.zero, false);
             AddTool("NeoGreenTool", newColors[0].type);
         }
-
+        public static ToolItemType AddNewColor(string name, Color color, Sprite sprite, List<ToolItemType> toolAcceptedList = null, List<ToolItemType> slotAcceptedList = null, bool toolAcceptAll = false, bool slotAcceptAll = false, bool isAttackType = false)
+        {
+            var type = (ToolItemType)(newColors.Count + 4);
+            newColors.Add(new()
+            {
+                name = name,
+                color = color,
+                type = type,
+                sprite = sprite,
+                toolAcceptedList = toolAcceptedList,
+                slotAcceptedList = slotAcceptedList,
+                toolAcceptAll = toolAcceptAll,
+                slotAcceptAll = slotAcceptAll,
+                isAttackType = isAttackType
+            });
+            return type;
+        }
+        public static ToolItemType AddNewColor(string name, Color color, Sprite sprite)
+        {
+            return AddNewColor(name, color, sprite);
+        }
         private void NewColors_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            // Doing this so the static variable updates
-            // whenever a user of needleforge adds a color, in theory
             InventoryToolCrest.TOOL_TYPES = (ToolItemType[])Enum.GetValues(typeof(ToolItemType));
         }
 
@@ -75,7 +93,6 @@ namespace Needleforge
             }
             return null;
         }
-
         public static LiquidToolData AddLiquidTool(string name, int maxRefills, int storageAmount, string InfiniteRefillsPD, Color liquidColor, 
             ToolItem.ReplenishResources resource, ToolItem.ReplenishUsages replenishUsage, float replenishMult, 
             StateSprites? fullSprites, StateSprites? emptySprites, 
